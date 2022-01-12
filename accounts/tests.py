@@ -76,3 +76,22 @@ class TestUser(TestCase):
 		response = client.post('/accounts/password/reset/', data, format='json')
 
 		self.assertEqual(response.status_code, 200)
+
+class TestRateLimiting(TestCase):
+
+	def test_sending_100_request_directly(self):
+
+		TestUser().test_create_normal_user_from_model()
+
+		data = {"email": "younes@djelloul.com", "password": "younes@@456"}
+
+		indicator = False
+
+		for i in range(100)
+			client   = APIClient()
+			response = client.post('/accounts/login/', data, format='json')
+
+			if response.status_code == 429:
+				indicator = True
+
+		self.assertEqual(indicator, True)

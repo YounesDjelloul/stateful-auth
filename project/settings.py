@@ -55,6 +55,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     # LOCAL
+    'project.middlewares.rate_limiting.RateLimiting',
     'project.middlewares.put_user_to_request.PutUser',
 ]
 

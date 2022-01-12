@@ -52,3 +52,21 @@ class AccessToken(models.Model):
 
 	def __str__(self):
 		return str(self.user)
+
+
+class ListIp(models.Model):
+
+	ip     = models.CharField(max_length=20)
+	number = models.PositiveIntegerField()
+	expire = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return self.ip + " - " + str(self.number)
+
+class BlackList(models.Model):
+
+	ip     = models.CharField(max_length=20)
+	expire = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return str(self.ip)
