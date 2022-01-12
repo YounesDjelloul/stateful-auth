@@ -1,7 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.utils import timezone
 
 # Create your models here.
+
+def add_to_timezone(delay):
+	return timezone.now() + delay
 
 class UserManager(BaseUserManager):
 	def create_user(self, email, password):
@@ -58,7 +62,7 @@ class ListIp(models.Model):
 
 	ip     = models.CharField(max_length=20)
 	number = models.PositiveIntegerField()
-	expire = models.DateTimeField(auto_now_add=True)
+	expire = models.DateTimeField(default=add_to_timezone(timezone.timedelta(days=0.04)))
 
 	def __str__(self):
 		return self.ip + " - " + str(self.number)
@@ -66,7 +70,7 @@ class ListIp(models.Model):
 class BlackList(models.Model):
 
 	ip     = models.CharField(max_length=20)
-	expire = models.DateTimeField(auto_now_add=True)
+	expire = models.DateTimeField(default=add_to_timezone(timezone.timedelta(days=0.02)))
 
 	def __str__(self):
 		return str(self.ip)

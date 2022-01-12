@@ -25,16 +25,24 @@ class RateLimiting:
 				return JsonResponse({"response": "You are blocked"}, status=400)
 
 			obj.delete()
+		else:
+			if ListIp.objects.filter(ip=ip).exists():
 
-		if ListIp.objects.filter(ip=ip).exists():
+				obj = ListIp.objects.get(ip=ip)
 
-			obj = ListIp.objects.get(ip=ip)
+				print(obj.expire, now)
 
-			if now < obj.expire:
-				obj.number += 1
-				obj.save()
+				if now < obj.expire:
+					obj.number += 1
+					obj.save()
 
-				if obj.number > 100:
-					BlackList.objects.create(ip=ip)
+					if obj.number > 100:
+						BlackList.objects.create(ip=ip)
 
-		return JsonResponse({"response": "Too Many Requests"}, status=429)
+						return JsonResponse({"response": "Too Many Requests, You are blocked"}, status=429)
+
+				else:
+					obj.number = 1
+					obj.save()
+			else:
+				ListIp.objects.create(ip=ip, number=1)

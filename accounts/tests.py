@@ -87,11 +87,13 @@ class TestRateLimiting(TestCase):
 
 		indicator = False
 
-		for i in range(100)
+		for i in range(150):
+			print(i)
 			client   = APIClient()
-			response = client.post('/accounts/login/', data, format='json')
+			response = client.post('/accounts/test/', data, format='json')
 
 			if response.status_code == 429:
 				indicator = True
+				break
 
 		self.assertEqual(indicator, True)
